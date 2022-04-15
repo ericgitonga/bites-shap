@@ -57,12 +57,14 @@ shap_values1_temp = explainer_treatment1(X_test1.astype("float32"))
 
 st.title("Displaying BITES SHAP in Streamlit")
 
+st.markdown("# Collective Beeswarm Plots")
 st.markdown("### No Hormonal Treatment")
 st_shap(shap.plots.beeswarm(shap_values0_temp))
 
 st.markdown("### With Hormonal Treatment")
 st_shap(shap.plots.beeswarm(shap_values1_temp))
 
+st.markdown("# Individual Plots")
 with streamlit_analytics.track():
     st.markdown("## No Hormonal Treatment Patients")
 
