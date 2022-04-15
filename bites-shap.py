@@ -54,5 +54,10 @@ explainer_treatment1 = shap.Explainer(net_treatment1, X_train1)
 shap_values0_temp = explainer_treatment0(X_test0.astype("float32"))
 shap_values1_temp = explainer_treatment1(X_test1.astype("float32"))
 
+st.title("Displaying BITES SHAP in Streamlit")
+
+st.markdown("### No Hormonal Treatment")
 st_shap(shap.plots.beeswarm(shap_values0_temp))
+
+st.markdown("### With Hormonal Treatment")
 st_shap(shap.plots.beeswarm(shap_values1_temp))
