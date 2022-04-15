@@ -8,6 +8,6 @@ sklearn
 matplotlib
 seaborn
 torch
-ray[tune]
+ray[tune]==1.8.0
 lifelines
 h5py
