@@ -57,33 +57,33 @@ shap_values1_temp = explainer_treatment1(X_test1.astype("float32"))
 
 st.title("Displaying BITES SHAP in Streamlit")
 
-st.markdown("# Collective Beeswarm Plots")
+st.markdown("## Collective Beeswarm Plots")
 st.markdown("### No Hormonal Treatment")
 st_shap(shap.plots.beeswarm(shap_values0_temp))
 
 st.markdown("### With Hormonal Treatment")
 st_shap(shap.plots.beeswarm(shap_values1_temp))
 
-st.markdown("# Individual Plots")
+st.markdown("## Individual Plots")
 with streamlit_analytics.track():
-    st.markdown("## No Hormonal Treatment Patients")
+    st.markdown("### No Hormonal Treatment Patients")
 
     index0 = st.selectbox("Select Patient To Display", list(range(1, len(X_test0)+1)), index=0)
-    st.markdown("### Patient {}".format(index0))
+    st.markdown("#### Patient {}".format(index0))
     
-    st.markdown("#### Beeswarm Plot")
+    st.markdown("##### Beeswarm Plot")
     st_shap(shap.plots.beeswarm(shap_values0_temp[index0-1:index0]), height=300)
     
-#     st.markdown("#### Waterfall Plot")
+#     st.markdown("##### Waterfall Plot")
 #     st_shap(shap.plots.waterfall(shap_values0_temp[index0]), height=300)
     
     
-    st.markdown("## Hormonal Treatment Patients")
+    st.markdown("### Hormonal Treatment Patients")
     index1 = st.selectbox("Select Patient To Display", list(range(1, len(X_test1)+1)), index=0)
-    st.markdown("### Patient {}".format(index1))
+    st.markdown("#### Patient {}".format(index1))
     
-    st.markdown("#### Beeswarm Plot")
+    st.markdown("##### Beeswarm Plot")
     st_shap(shap.plots.beeswarm(shap_values1_temp[index1-1:index1]), height=300)
     
-#     st.markdown("#### Waterfall Plot")
+#     st.markdown("##### Waterfall Plot")
 #     st_shap(shap.plots.waterfall(shap_values1_temp[index1]), height=300)
