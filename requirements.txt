@@ -8,6 +8,6 @@ sklearn
 matplotlib
 seaborn
 torch
-ray
+ray[tune]
 lifelines
 h5py
