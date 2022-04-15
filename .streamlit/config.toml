@@ -198,7 +198,7 @@ keyPrefix = ""
 #primaryColor =
 
 # Background color for the main content area.
-#backgroundColor =
+backgroundColor = "#faf5ff"
 
 # Background color used for the sidebar and most interactive widgets.
 #secondaryBackgroundColor =
