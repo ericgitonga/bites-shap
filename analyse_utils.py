@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import torch
-from bites.model.BITES_base import BITES
-from bites.utils.eval_surv import EvalSurv
+# from bites.model.BITES_base import BITES
+# from bites.utils.eval_surv import EvalSurv
 from lifelines import KaplanMeierFitter
 from lifelines.statistics import logrank_test
 from ray.tune import Analysis
