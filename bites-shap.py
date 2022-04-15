@@ -57,33 +57,37 @@ shap_values1_temp = explainer_treatment1(X_test1.astype("float32"))
 
 st.title("Displaying BITES SHAP in Streamlit")
 
-st.markdown("## Collective Beeswarm Plots")
-st.markdown("### No Hormonal Treatment")
+st.markdown("## Collective Non-Hormonal Treatment")
 st_shap(shap.plots.beeswarm(shap_values0_temp))
 
-st.markdown("### With Hormonal Treatment")
+st.markdown("## Collective Hormonal Treatment")
 st_shap(shap.plots.beeswarm(shap_values1_temp))
 
-st.markdown("## Individual Plots")
 with streamlit_analytics.track():
-    st.markdown("### No Hormonal Treatment Patients")
-
     index0 = st.selectbox("Select Patient To Display", list(range(1, len(X_test0)+1)), index=0)
-    st.markdown("#### Patient {}".format(index0))
+    st.markdown("## Non-Hormonal Treatment Patient {}".format(index0))
     
-    st.markdown("##### Beeswarm Plot")
-    st_shap(shap.plots.beeswarm(shap_values0_temp[index0-1:index0]), height=300)
+    st.markdown("### Beeswarm Plot")
+    st_shap(shap.plots.beeswarm(shap_values0_temp[index0-1:index0]))
     
-#     st.markdown("##### Waterfall Plot")
-#     st_shap(shap.plots.waterfall(shap_values0_temp[index0]), height=300)
+    st.markdown("### Waterfall Plot")
+    shap_object0 = shap.Explanation(base_values = shap_values0_temp[index0][0].base_values,
+                                   values = shap_values0_temp[index0].values,
+                                   feature_names = X_test0.columns,
+                                   data = shap_values0_temp[index0].data)
+
+    st_shap(shap.plots.waterfall(shap_object0))
     
-    
-    st.markdown("### Hormonal Treatment Patients")
     index1 = st.selectbox("Select Patient To Display", list(range(1, len(X_test1)+1)), index=0)
-    st.markdown("#### Patient {}".format(index1))
+    st.markdown("## Hormonal Treatment Patient {}".format(index1))
     
-    st.markdown("##### Beeswarm Plot")
-    st_shap(shap.plots.beeswarm(shap_values1_temp[index1-1:index1]), height=300)
+    st.markdown("### Beeswarm Plot")
+    st_shap(shap.plots.beeswarm(shap_values1_temp[index1-1:index1]))
     
-#     st.markdown("##### Waterfall Plot")
-#     st_shap(shap.plots.waterfall(shap_values1_temp[index1]), height=300)
+    st.markdown("### Waterfall Plot")
+    shap_object1 = shap.Explanation(base_values = shap_values1_temp[index1][0].base_values,
+                                   values = shap_values1_temp[index1].values,
+                                   feature_names = X_test1.columns,
+                                   data = shap_values1_temp[index1].data)
+
+    st_shap(shap.plots.waterfall(shap_object1))
