@@ -1,0 +1,13 @@
+streamlit==1.3.1
+streamlit-analytics
+streamlit-shap
+pandas
+numpy
+shap
+sklearn
+matplotlib
+seaborn
+torch
+ray
+lifelines
+h5py
