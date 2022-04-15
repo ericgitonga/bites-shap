@@ -74,7 +74,7 @@ st.markdown("## Collective Hormonal Treatment")
 st_shap(shap.plots.beeswarm(shap_values1_temp))
 
 with streamlit_analytics.track():
-    index0 = st.selectbox("Select Patient To Display",
+    index0 = st.selectbox("Select Non-Hormonal Treatment Patient To Display",
                           list(range(1, len(X_test0)+1)), index=0)
     st.markdown("## Non-Hormonal Treatment Patient {}".format(index0))
 
@@ -89,7 +89,7 @@ with streamlit_analytics.track():
 
     st_shap(shap.plots.waterfall(shap_object0))
 
-    index1 = st.selectbox("Select Patient To Display",
+    index1 = st.selectbox("Select Hormonal Treatment Patient To Display",
                           list(range(1, len(X_test1)+1)), index=0)
     st.markdown("## Hormonal Treatment Patient {}".format(index1))
 
