@@ -5,6 +5,7 @@ from analyse_utils import *
 from RGBSG_utils import load_RGBSG, load_RGBSG_no_onehot
 import pickle
 import streamlit as st
+import streamlit_analytics
 from streamlit_shap import st_shap
 
 method = "BITES"
@@ -61,3 +62,26 @@ st_shap(shap.plots.beeswarm(shap_values0_temp))
 
 st.markdown("### With Hormonal Treatment")
 st_shap(shap.plots.beeswarm(shap_values1_temp))
+
+with streamlit_analytics.track():
+    st.markdown("## No Hormonal Treatment Patients")
+
+    index0 = st.selectbox("Select Patient To Display", list(range(1, len(X_test0)+1)), index=0)
+    st.markdown("### Patient {}".format(index0))
+    
+    st.markdown("#### Beeswarm Plot")
+    st_shap(shap.plots.beeswarm(shap_values0_temp[index0-1:index0]), height=300)
+    
+#     st.markdown("#### Waterfall Plot")
+#     st_shap(shap.plots.waterfall(shap_values0_temp[index0]), height=300)
+    
+    
+    st.markdown("## Hormonal Treatment Patients")
+    index1 = st.selectbox("Select Patient To Display", list(range(1, len(X_test1)+1)), index=0)
+    st.markdown("### Patient {}".format(index1))
+    
+    st.markdown("#### Beeswarm Plot")
+    st_shap(shap.plots.beeswarm(shap_values1_temp[index1-1:index1]), height=300)
+    
+#     st.markdown("#### Waterfall Plot")
+#     st_shap(shap.plots.waterfall(shap_values1_temp[index1]), height=300)
