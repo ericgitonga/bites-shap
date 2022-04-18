@@ -92,7 +92,9 @@ def get_ITE_BITES(model, X, treatment, best_treatment=None, death_probability=0.
     return ITE, correct_predicted_probability
 
 
-def analyse_randomized_test_set(pred_ite, Y_test, event_test, treatment_test, C_index=None, method_name='set_name', save_path=None,new_figure=True,annotate=True):
+def analyse_randomized_test_set(pred_ite, Y_test, event_test, treatment_test,
+                                C_index=None, method_name='set_name',
+                                save_path=None, new_figure=True, annotate=True):
     mask_recommended = (pred_ite > 0) == treatment_test
     mask_antirecommended = (pred_ite < 0) == treatment_test
 
