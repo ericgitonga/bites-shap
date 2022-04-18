@@ -6,7 +6,6 @@ from analyse_utils import get_ITE_BITES, analyse_randomized_test_set
 from RGBSG_utils import load_RGBSG, load_RGBSG_no_onehot
 import streamlit as st
 import streamlit_analytics
-from streamlit_shap import st_shap
 import pandas as pd
 import torch
 import matplotlib.pyplot as plt
@@ -95,10 +94,14 @@ with streamlit_analytics.track():
 
     if collective_plots:
         st.markdown("#### Collective Non-Hormonal Treatment")
-        st_shap(shap.plots.beeswarm(shap_values0_temp))
-
+        fig, ax = plt.subplots()
+        shap.plots.beeswarm(shap_values0_temp)
+        st.pyplot(fig)
+        
         st.markdown("#### Collective Hormonal Treatment")
-        st_shap(shap.plots.beeswarm(shap_values1_temp))
+        fig, ax = plt.subplots()
+        shap.plots.beeswarm(shap_values1_temp)
+        st.pyplot(fig)
 
     st.markdown("### Individual Beeswarm and Waterfall plots")
 
@@ -110,28 +113,33 @@ with streamlit_analytics.track():
         st.markdown("#### Non-Hormonal Treatment Patient {}".format(index0))
 
         st.markdown("##### Beeswarm Plot")
-        st_shap(shap.plots.beeswarm(shap_values0_temp[index0-1:index0]))
+        fig, ax = plt.subplots()
+        shap.plots.beeswarm(shap_values0_temp[index0-1:index0])
+        st.pyplot(fig)
 
         st.markdown("##### Waterfall Plot")
         shap_object0 = shap.Explanation(base_values=shap_values0_temp[index0][0].base_values,
                                         values=shap_values0_temp[index0].values,
                                         feature_names=X_test0.columns,
                                         data=shap_values0_temp[index0].data)
-
-        st_shap(shap.plots.waterfall(shap_object0))
-
+        fig, ax = plt.subplots()
+        shap.plots.waterfall(shap_object0)
+        st.pyplot(fig)
+        
         index1 = st.selectbox("Select Hormonal Treatment Patient To Display",
                               list(range(1, len(X_test1)+1)), index=0)
         st.markdown("#### Hormonal Treatment Patient {}".format(index1))
 
         st.markdown("##### Beeswarm Plot")
-        st_shap(shap.plots.beeswarm(shap_values1_temp[index1-1:index1]))
+        fig, ax = plt.subplots()
+        shap.plots.beeswarm(shap_values1_temp[index1-1:index1])
+        st.pyplot(fig)
 
         st.markdown("##### Waterfall Plot")
         shap_object1 = shap.Explanation(base_values=shap_values1_temp[index1][0].base_values,
                                         values=shap_values1_temp[index1].values,
                                         feature_names=X_test1.columns,
                                         data=shap_values1_temp[index1].data)
-
-        st_shap(shap.plots.waterfall(shap_object1))
-
+        fig, ax = plt.subplots()
+        shap.plots.waterfall(shap_object1)
+        st.pyplot(fig)
