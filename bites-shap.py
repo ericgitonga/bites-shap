@@ -51,7 +51,7 @@ with streamlit_analytics.track():
              ax = analyse_randomized_test_set(pred_ite, Y_test, event_test,
                                               treatment_test, C_index=C_index,
                                               method_name=method)
-        with st.expander("Show the Survival Time vs. Survival Probability graph"):
+        with st.expander("Show Plot"):
             st.pyplot(fig)
 
     model.eval()
@@ -89,10 +89,7 @@ with streamlit_analytics.track():
     shap_values1_temp = explainer_treatment1(X_test1.astype("float32"))
 
     st.markdown("### Collective Beeswarm plots")
-    collective_plots = st.checkbox("Show Collective Beeswarm plots",
-                               key="Collective")
-
-    if collective_plots:
+    with st.expander("Show Plots"):
         st.markdown("#### Collective Non-Hormonal Treatment")
         fig, ax = plt.subplots()
         shap.plots.beeswarm(shap_values0_temp)
@@ -104,10 +101,7 @@ with streamlit_analytics.track():
         st.pyplot(fig)
 
     st.markdown("### Individual Beeswarm and Waterfall plots")
-
-    individual_plots = st.checkbox("Show Individual plots",
-                                   key="Individual")
-    if individual_plots:
+    with st.expander("Show Plots"):
         index0 = st.selectbox("Select Non-Hormonal Treatment Patient To Display",
                               list(range(1, len(X_test0)+1)), index=0)
         st.markdown("#### Non-Hormonal Treatment Patient {}".format(index0))
