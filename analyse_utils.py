@@ -12,13 +12,18 @@ from lifelines.statistics import logrank_test
 from ray.tune import Analysis
 
 
-def get_best_model(path_to_experiment="./ray_results/test_hydra", assign_treatment=None):
-    analysis = Analysis(path_to_experiment, default_metric="val_loss", default_mode="min")
+def get_best_model(path_to_experiment="./ray_results/test_hydra",
+                   assign_treatment=None):
+    analysis = Analysis(path_to_experiment,
+                        default_metric="val_loss",
+                        default_mode="min")
     best_config = analysis.get_best_config()
     best_checkpoint_dir = analysis.get_best_checkpoint(analysis.get_best_logdir())
 
     if best_config["Method"] == 'BITES' or best_config["Method"] == 'ITES':
-        best_net = BITES(best_config["num_covariates"], best_config["shared_layer"], best_config["individual_layer"],
+        best_net = BITES(best_config["num_covariates"],
+                         best_config["shared_layer"],
+                         best_config["individual_layer"],
                          out_features=1,
                          dropout=best_config["dropout"])
     
@@ -38,10 +43,19 @@ def get_C_Index_BITES(model, X, time, event, treatment):
     surv0, surv1 = model.predict_surv_df(X, treatment)
     surv = pd.concat([surv0, surv1], axis=1)
     surv = surv.interpolate('index')
-    C_index0 = EvalSurv(surv0, time[treatment == 0], event[treatment == 0], censor_surv='km').concordance_td()
-    C_index1 = EvalSurv(surv1, time[treatment == 1], event[treatment == 1], censor_surv='km').concordance_td()
-    C_index = EvalSurv(surv, np.append(time[treatment == 0], time[treatment == 1]),
-                       np.append(event[treatment == 0], event[treatment == 1]),
+    C_index0 = EvalSurv(surv0,
+                        time[treatment == 0],
+                        event[treatment == 0],
+                        censor_surv='km').concordance_td()
+    C_index1 = EvalSurv(surv1,
+                        time[treatment == 1],
+                        event[treatment == 1],
+                        censor_surv='km').concordance_td()
+    C_index = EvalSurv(surv,
+                       np.append(time[treatment == 0],
+                                 time[treatment == 1]),
+                       np.append(event[treatment == 0],
+                                 event[treatment == 1]),
                        censor_surv='km').concordance_td()
 
     return C_index, C_index0, C_index1
@@ -63,15 +77,19 @@ def get_ITE_BITES(model, X, treatment, best_treatment=None, death_probability=0.
     pred0 = np.zeros(surv0.shape[1])
     pred0_cf = np.zeros(surv0.shape[1])
     for i in range(surv0.shape[1]):
-        pred0[i] = surv0.axes[0][find_nearest_index(surv0.iloc[:, i].values, death_probability)]
-        pred0_cf[i] = surv0_cf.axes[0][find_nearest_index(surv0_cf.iloc[:, i].values, death_probability)]
+        pred0[i] = surv0.axes[0][find_nearest_index(surv0.iloc[:, i].values,
+                                                    death_probability)]
+        pred0_cf[i] = surv0_cf.axes[0][find_nearest_index(surv0_cf.iloc[:, i].values,
+                                                          death_probability)]
     ITE0 = pred0_cf - pred0
 
     pred1 = np.zeros(surv1.shape[1])
     pred1_cf = np.zeros(surv1.shape[1])
     for i in range(surv1.shape[1]):
-        pred1[i] = surv1.axes[0][find_nearest_index(surv1.iloc[:, i].values, death_probability)]
-        pred1_cf[i] = surv1_cf.axes[0][find_nearest_index(surv1_cf.iloc[:, i].values, death_probability)]
+        pred1[i] = surv1.axes[0][find_nearest_index(surv1.iloc[:, i].values,
+                                                    death_probability)]
+        pred1_cf[i] = surv1_cf.axes[0][find_nearest_index(surv1_cf.iloc[:, i].values,
+                                                          death_probability)]
     ITE1 = pred1 - pred1_cf
 
     ITE = np.zeros(X.shape[0])
@@ -103,17 +121,29 @@ def analyse_randomized_test_set(pred_ite, Y_test, event_test, treatment_test,
     antirecommended_times = Y_test[mask_antirecommended]
     antirecommended_event = event_test[mask_antirecommended]
 
-    logrank_result = logrank_test(recommended_times, antirecommended_times, recommended_event, antirecommended_event, alpha=0.95)
+    logrank_result = logrank_test(recommended_times,
+                                  antirecommended_times,
+                                  recommended_event,
+                                  antirecommended_event,
+                                  alpha=0.95)
 
     colors = sns.color_palette()
     kmf = KaplanMeierFitter()
     kmf_cf = KaplanMeierFitter()
     if method_name==None:
-        kmf.fit(recommended_times, recommended_event, label='Treated')
-        kmf_cf.fit(antirecommended_times, antirecommended_event, label='Control')
+        kmf.fit(recommended_times,
+                recommended_event,
+                label='Treated')
+        kmf_cf.fit(antirecommended_times,
+                   antirecommended_event,
+                   label='Control')
     else:
-        kmf.fit(recommended_times, recommended_event, label=method_name + ' Recommendation')
-        kmf_cf.fit(antirecommended_times, antirecommended_event, label=method_name + ' Anti-Recommendation')
+        kmf.fit(recommended_times,
+                recommended_event,
+                label=method_name + ' Recommendation')
+        kmf_cf.fit(antirecommended_times,
+                   antirecommended_event,
+                   label=method_name + ' Anti-Recommendation')
 
 
     if new_figure:
@@ -131,10 +161,17 @@ def analyse_randomized_test_set(pred_ite, Y_test, event_test, treatment_test,
     if annotate:
         # Calculate p-value text position and display.
         y_pos = 0.4
-        plt.text(1 * 3, y_pos, f"$p$ = {logrank_result.p_value:.6f}", fontsize='small')
+        plt.text(1 * 3,
+                 y_pos,
+                 f"$p$ = {logrank_result.p_value:.6f}",
+                 fontsize='small')
         fraction2 = np.sum((pred_ite > 0)) / pred_ite.shape[0]
-        plt.text(1 * 3, 0.3, 'C-Index=' + str(C_index)[:5], fontsize='small')
-        plt.text(1 * 3, 0.2, f"{fraction2 * 100:.1f}% recommended for T=1", fontsize='small')
+        plt.text(1 * 3, 0.3,
+                 'C-Index=' + str(C_index)[:5],
+                 fontsize='small')
+        plt.text(1 * 3, 0.2,
+                 f"{fraction2 * 100:.1f}% recommended for T=1",
+                 fontsize='small')
 
     plt.xlabel('Survival Time [month]')
     plt.ylabel('Survival Probability')
@@ -142,4 +179,3 @@ def analyse_randomized_test_set(pred_ite, Y_test, event_test, treatment_test,
     plt.tight_layout()
     if save_path:
         plt.savefig(save_path, format='pdf')
-

@@ -6,8 +6,9 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
 def load_RGBSG(partition='complete',filename_ = r"""rgbsg.h5"""):
     """References
-    ----------
-    .. [#katzman0] Katzman, Jared L., et al. "DeepSurv: personalized treatment recommender system using a Cox proportional hazards deep neural network." BMC medical research methodology 18.1 (2018): 24.
+    [#katzman0] Katzman, Jared L., et al. "DeepSurv: personalized treatment
+    recommender system using a Cox proportional hazards deep neural network."
+    BMC medical research methodology 18.1 (2018): 24.
     """
     # Read training data.
     with h5py.File(filename_, 'r') as f:
@@ -37,9 +38,21 @@ def load_RGBSG(partition='complete',filename_ = r"""rgbsg.h5"""):
     else:
         raise ValueError('Invalid partition.')
 
-    column_names = ['horm_treatment', 'grade', 'menopause', 'age', 'n_positive_nodes', 'progesterone', 'estrogen']
+    column_names = ['horm_treatment',
+                    'grade',
+                    'menopause',
+                    'age',
+                    'n_positive_nodes',
+                    'progesterone',
+                    'estrogen']
     df_X = pd.DataFrame(data=X, columns=column_names)
-    df_X=df_X[['horm_treatment', 'menopause' , 'grade', 'n_positive_nodes', 'age', 'progesterone', 'estrogen']]
+    df_X=df_X[['horm_treatment',
+               'menopause' ,
+               'grade',
+               'n_positive_nodes',
+               'age',
+               'progesterone',
+               'estrogen']]
 
     scaler=StandardScaler()
     X_std=scaler.fit_transform(df_X.values[:,3:])
@@ -55,8 +68,9 @@ def load_RGBSG(partition='complete',filename_ = r"""rgbsg.h5"""):
 
 def load_RGBSG_no_onehot(partition='complete',filename_ = r"""rgbsg.h5"""):
     """References
-    ----------
-    .. [#katzman0] Katzman, Jared L., et al. "DeepSurv: personalized treatment recommender system using a Cox proportional hazards deep neural network." BMC medical research methodology 18.1 (2018): 24.
+    [#katzman0] Katzman, Jared L., et al. "DeepSurv: personalized treatment
+    recommender system using a Cox proportional hazards deep neural network."
+    BMC medical research methodology 18.1 (2018): 24.
     """
     # Read training data.
     with h5py.File(filename_, 'r') as f:
@@ -86,9 +100,21 @@ def load_RGBSG_no_onehot(partition='complete',filename_ = r"""rgbsg.h5"""):
     else:
         raise ValueError('Invalid partition.')
 
-    column_names = ['horm_treatment', 'grade', 'menopause', 'age', 'n_positive_nodes', 'progesterone', 'estrogen']
+    column_names = ['horm_treatment',
+                    'grade',
+                    'menopause',
+                    'age',
+                    'n_positive_nodes',
+                    'progesterone',
+                    'estrogen']
     df_X = pd.DataFrame(data=X, columns=column_names)
-    df_X=df_X[['horm_treatment', 'menopause' , 'grade', 'n_positive_nodes', 'age', 'progesterone', 'estrogen']]
+    df_X=df_X[['horm_treatment',
+               'menopause' ,
+               'grade',
+               'n_positive_nodes',
+               'age',
+               'progesterone',
+               'estrogen']]
 
     scaler=StandardScaler()
     X_std=scaler.fit_transform(df_X.values[:,3:])
@@ -97,4 +123,3 @@ def load_RGBSG_no_onehot(partition='complete',filename_ = r"""rgbsg.h5"""):
     treatment=df_X['horm_treatment'].to_numpy().flatten()
 
     return X, Y.flatten(), event.flatten(),treatment, scaler
-
