@@ -41,7 +41,7 @@ with streamlit_analytics.track():
             ax = analyse_randomized_test_set(np.ones_like(pred_ite), Y_test,
                                         event_test, treatment_test,
                                         C_index=C_index, method_name=None,
-                                        annotate=True)
+                                        annotate=False)
             ax1 = analyse_randomized_test_set(pred_ite, Y_test, event_test,
                                              treatment_test, C_index=C_index,
                                              method_name=method,
