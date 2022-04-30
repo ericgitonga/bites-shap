@@ -37,12 +37,12 @@ with streamlit_analytics.track():
     
         if toggle_ATE: 
         # if compare_against_ATE:
-            analyse_randomized_test_set(np.ones_like(pred_ite), Y_test,
+            fig, ax = plt.subplots()
+            ax = analyse_randomized_test_set(np.ones_like(pred_ite), Y_test,
                                         event_test, treatment_test,
                                         C_index=C_index, method_name=None,
-                                        annotate=False)
-            fig, ax = plt.subplots()
-            ax = analyse_randomized_test_set(pred_ite, Y_test, event_test,
+                                        annotate=True)
+            ax1 = analyse_randomized_test_set(pred_ite, Y_test, event_test,
                                              treatment_test, C_index=C_index,
                                              method_name=method,
                                              new_figure=False, annotate=True)
@@ -77,8 +77,13 @@ with streamlit_analytics.track():
 
     X_train0 = X_train[treatment_train == 0]
     X_train1 = X_train[treatment_train == 1]
-    names = ["N pos nodes", "Age", "Progesterone",
-             "Estrogene", "Menopause", "Grade"]
+    
+    names = ["N pos nodes",
+             "Age",
+             "Progesterone",
+             "Estrogene",
+             "Menopause",
+             "Grade"]
     X_test0 = pd.DataFrame(X_test[treatment_test == 0], columns=names)
     X_test1 = pd.DataFrame(X_test[treatment_test == 1], columns=names)
 
