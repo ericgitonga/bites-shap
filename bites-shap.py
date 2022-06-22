@@ -12,6 +12,15 @@ import matplotlib.pyplot as plt
 
 with streamlit_analytics.track():
     st.title("Displaying BITES SHAP in Streamlit")
+    
+    hide_st_style = """
+    				<style>
+    				#MainMenu {visibility: hidden;}
+    				footer {visibility: hidden;}
+    				header {visibility: hidden;}
+    				</style>
+    				"""
+    st.markdown(hide_st_style, unsafe_allow_html=True)
 
     method = "BITES"
     results_dir = "example_results/"
